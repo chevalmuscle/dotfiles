@@ -1,0 +1,12 @@
+[user]
+	email = me@marcantoinejean.com
+	name = chevalmuscle
+[core]
+	excludesfile = /Users/chevalmuscle/.gitignore_global
+[init]
+	defaultBranch = master
+[pull]
+	rebase = false
+[alias]
+  last-tag = describe --tags --abbrev=0 @^
+  cl = !git log --no-merges --pretty=format:' %h - %s (%ci) <%an>' $(git last-tag)..@
