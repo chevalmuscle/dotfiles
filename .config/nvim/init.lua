@@ -53,6 +53,8 @@ Plug 'VonHeikemen/lsp-zero.nvim'
 
 Plug 'tpope/vim-commentary'
 
+Plug 'tpope/vim-surround'
+
 vim.call('plug#end')
 
 require('mason').setup()
