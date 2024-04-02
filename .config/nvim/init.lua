@@ -133,6 +133,7 @@ lspconfig = require("lspconfig")
 lspconfig.gopls.setup {
     on_attach = require("lsp-format").on_attach
 }
+lspconfig.tsserver.setup {}
 
 local python_root_files = {
     'WORKSPACE',
