@@ -9,6 +9,7 @@ vim.wo.relativenumber = true
 vim.wo.number = true
 vim.wo.cursorline = true
 vim.opt.expandtab = true
+vim.opt.mouse = "" -- disable mouse scrolling
 
 -- Plugins
 
