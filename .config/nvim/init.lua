@@ -9,7 +9,7 @@ vim.wo.relativenumber = true
 vim.wo.number = true
 vim.wo.cursorline = true
 vim.opt.expandtab = true
-vim.opt.mouse = "" -- disable mouse scrolling
+vim.opt.mouse = ""
 
 -- Plugins
 
@@ -26,6 +26,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'lukas-reineke/lsp-format.nvim'
+Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jose-elias-alvarez/buftabline.nvim'
@@ -83,6 +84,9 @@ require('nvim-treesitter.configs').setup {
         use_languagetree = true
     }
 }
+
+-- telescope
+require("telescope").load_extension("live_grep_args")
 
 -- nvim-tree
 require("nvim-tree").setup()
@@ -219,9 +223,9 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- use system clipboard
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- edit word at cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
