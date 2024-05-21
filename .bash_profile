@@ -69,6 +69,7 @@ alias gs='git stash -u'
 alias gsp='git stash pop'
 alias ga='git add .'
 alias grl='git reset --soft HEAD~'
+alias gd='git diff'
 
 # autocomplete makefile
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
