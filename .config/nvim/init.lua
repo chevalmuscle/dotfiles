@@ -57,6 +57,11 @@ Plug 'tpope/vim-commentary'
 
 Plug 'tpope/vim-surround'
 
+-- Database
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-completion'
+Plug 'kristijanhusak/vim-dadbod-ui'
+
 vim.call('plug#end')
 
 require('mason').setup()
@@ -158,6 +163,14 @@ lsp.setup()
 
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
+
+-- Setup up vim-dadbod
+cmp.setup.filetype({ "sql" }, {
+    sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" },
+    },
+})
 
 -- Keybindings
 local map = vim.api.nvim_set_keymap
