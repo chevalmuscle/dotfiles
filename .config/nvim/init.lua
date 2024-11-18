@@ -50,6 +50,7 @@ Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'L3MON4D3/LuaSnip'
+Plug 'danymat/neogen'
 
 Plug 'VonHeikemen/lsp-zero.nvim'
 
@@ -181,6 +182,11 @@ require('telescope').setup {
     }
 }
 
+require('neogen').setup {
+    enabled = true,
+    input_after_comment = true,
+}
+
 -- Keybindings
 local map = vim.api.nvim_set_keymap
 local opts = {
@@ -219,6 +225,9 @@ vim.keymap.set('n', '<leader>x', '<CMD>bdelete<CR>', opts)
 -- keybindings: gopher
 vim.keymap.set('n', "<leader>gtj", "<CMD>GoTagAdd json<CR>", opts)
 vim.keymap.set('n', "<leader>gie", "<CMD>GoIfErr<CR>", opts)
+
+-- keybindings: neogen
+vim.keymap.set('n', '<leader>nf', function() require("neogen").generate() end, opts)
 
 -- keybindings: open floating window for errors
 vim.keymap.set('n', '<leader>i', function() vim.diagnostic.open_float() end, { desc = 'Toggle Diagnostics' })
