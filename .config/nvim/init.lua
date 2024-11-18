@@ -172,6 +172,15 @@ cmp.setup.filetype({ "sql" }, {
     },
 })
 
+require('telescope').setup {
+    defaults = {
+        file_ignore_patterns = {
+            "*.geojson",
+            "*.svg",
+        }
+    }
+}
+
 -- Keybindings
 local map = vim.api.nvim_set_keymap
 local opts = {
