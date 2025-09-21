@@ -25,7 +25,6 @@ Plug 'numToStr/Navigator.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'lukas-reineke/lsp-format.nvim'
 Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 
 Plug 'kyazdani42/nvim-web-devicons'
@@ -42,17 +41,11 @@ Plug 'RRethy/vim-illuminate'
 Plug 'iamcco/markdown-preview.nvim'
 
 -- LSP Support
-Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
 
 -- Autocompletion
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'danymat/neogen'
-
-Plug 'VonHeikemen/lsp-zero.nvim'
 
 Plug 'tpope/vim-commentary'
 
@@ -114,63 +107,28 @@ require("buftabline").setup {
 -- markdown preview dark theme is shit. set it to light
 vim.g.mkdp_theme = "light"
 
--- lsp
-local lsp = require('lsp-zero').preset({})
+require("core.lsp")
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-lsp.on_attach(function(client, bufnr)
-    -- see :help lsp-zero-keybindings
-    -- to learn the available actions
-    lsp.default_keymaps({
-        buffer = bufnr
-    })
-
-    lsp.buffer_autoformat()
-
-    local opts = {
-        buffer = bufnr
-    }
-    local bind = vim.keymap.set
-
-    bind('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-end)
-
--- lua lsp config
-require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
--- golang lsp config + format on save
-require("lsp-format").setup {}
-lspconfig = require("lspconfig")
-
-lspconfig.gopls.setup {
-    on_attach = require("lsp-format").on_attach
-}
-lspconfig.tsserver.setup {}
-
-local python_root_files = {
-    'WORKSPACE',
-    'pyproject.toml',
-    'setup.py',
-    'setup.cfg',
-    'requirements.txt',
-    'Pipfile',
-    'pyrightconfig.json',
-}
-lspconfig["pyright"].setup {
-    on_attach = on_attach,
-    root_dir = lspconfig.util.root_pattern(unpack(python_root_files))
-}
-
-lsp.setup()
-
-local cmp = require('cmp')
-local cmp_action = require('lsp-zero').cmp_action()
-
--- Setup up vim-dadbod
-cmp.setup.filetype({ "sql" }, {
-    sources = {
-        { name = "vim-dadbod-completion" },
-        { name = "buffer" },
-    },
+        if client:supports_method('textDocument/completion') then
+            vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+        end
+        -- Auto-format ("lint") on save.
+        -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
+        if not client:supports_method('textDocument/willSaveWaitUntil')
+             and client:supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                group = vim.api.nvim_create_augroup('my.lsp', {clear=false}),
+                buffer = args.buf,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+                end,
+            })
+        end
+    end,
 })
 
 require('telescope').setup {
@@ -186,6 +144,7 @@ require('neogen').setup {
     enabled = true,
     input_after_comment = true,
 }
+
 
 -- Keybindings
 local map = vim.api.nvim_set_keymap
