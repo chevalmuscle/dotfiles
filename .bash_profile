@@ -22,6 +22,10 @@ fi
 
 # aliases
 
+## jwt
+
+alias decodejwt="jq -R 'split(\".\") | .[1] | @base64d | fromjson'"
+
 ## neovim
 
 alias vim='nvim'
@@ -45,13 +49,13 @@ alias ns='npm run start'
 alias nd='npm run start:dev'
 alias nr='npm run'
 
-## Replaces generic rm with rmtrash
-alias rm='rmtrash'
+## Replaces generic rm with trash
+alias rm='trash'
 
 ## general aliases
-alias ls='exa --grid'
-alias ll='exa -l -h --git'
-alias lst='exa --tree'
+alias ls='eza --grid'
+alias ll='eza -l -h --git'
+alias lst='eza --tree'
 
 ## git aliases
 alias gst='git status'
@@ -70,6 +74,8 @@ alias gsp='git stash pop'
 alias ga='git add .'
 alias grl='git reset --soft HEAD~'
 alias gd='git diff'
+alias gds='git diff --staged'
+alias gbb="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 
 # autocomplete makefile
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
@@ -82,7 +88,7 @@ parse_git_branch() {
 TIMESTAMP=`date "+%H:%M:%S"`
 
 # prompt color
-export PS1="\[\033[33m\][\D{%H:%M:%S}]\[\033[m\] \[\033[31m\]\u\[\033[m\] \[\033[32m\]\w\[\033[m\]\[\033[36m\]\$(parse_git_branch)\[\033[m\] $ "
+export PS1="\[\033[33m\][\D{%H:%M:%S}]\[\033[m\] \[\033[32m\]\w\[\033[m\]\[\033[36m\]\$(parse_git_branch)\[\033[m\] $ "
 
 # ls colors
 export CLICOLOR=1
@@ -98,3 +104,8 @@ export PATH="/usr/local/opt/python@3.10/bin:$PATH"
 
 # celery
 export PATH="$PATH:/usr/local/sbin"
+
+# direnv
+eval "$(direnv hook bash)"
+
+source ~/.personal_bash_profile
