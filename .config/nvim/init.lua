@@ -31,6 +31,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jose-elias-alvarez/buftabline.nvim'
 
 Plug 'tpope/vim-fugitive'
+Plug 'kdheepak/lazygit.nvim'
 
 Plug 'olexsmir/gopher.nvim'
 
@@ -233,3 +234,6 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- edit word at cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- lazy git
+vim.keymap.set("n", "<leader>gg", "<CMD>LazyGit<CR>")
